@@ -51,8 +51,33 @@ Para o módulo de Drive, adicione o arquivo credentials.json e google-credential
 
 **Rodando a Aplicação Web
 Para utilizar a interface visual de correção individual:
+   ```bash
+   streamlit run app.py
+  ```
+Rodando a Automação em Lote (Google Drive)
+Para monitorar e corrigir arquivos de uma pasta do Drive automaticamente:
 
+   ```bash
+   python corrigir_em_lote.py
+````
+📂 **Estrutura do Projeto
+```
+├── app.py                 # Interface Web (Frontend Streamlit)
+├── logica_ia.py           # Integração com Gemini e Engenharia de Prompt
+├── corrigir_em_lote.py    # Script de automação via Google Drive
+├── gerador_docx.py        # Motor de geração de relatórios Word
+├── prompt.txt             # Prompt System com critérios do ENEM
+├── template.docx          # Modelo base para o relatório final
+└── requirements.txt       # Dependências do projeto
+```
+🧠 **Desafios Técnicos Superados
+Engenharia de Prompt com JSON: Configuração do modelo para retornar estritamente um JSON válido, evitando erros de parseamento na geração do documento final.
 
+Integração Multimodal: Envio simultâneo de imagem e texto para o modelo interpretar a caligrafia e o conteúdo semântico em uma única chamada de API.
 
+Manipulação de Arquivos: Uso de buffers de memória (io.BytesIO) para gerar e manipular arquivos Word sem necessidade de gravação excessiva em disco.
 
-   
+📄 **Licença
+Este projeto está sob a licença MIT - veja o arquivo LICENSE para detalhes.
+
+Desenvolvido por Claudio Matheus
