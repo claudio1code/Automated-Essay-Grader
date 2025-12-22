@@ -10,9 +10,9 @@ from services import ai_service, report_service
 logger = get_logger(__name__)
 
 # --- Configuração da Página e Inicialização ---
-st.set_page_config(layout="wide", page_title="Projeto Mae Redação", page_icon="✍️")
+st.set_page_config(layout="wide", page_title="AI Essay Grader", page_icon="✍️")
 
-st.title("✍️ Projeto Mae Redação")
+st.title("✍️ AI Essay Grader")
 st.markdown(
     "Faça o upload da foto de uma redação manuscrita para receber uma análise completa e precisa."
 )
