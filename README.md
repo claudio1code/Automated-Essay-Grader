@@ -1,4 +1,4 @@
-# ✍️ Projeto Mãe Redação - Corretor de Redações com IA
+# ✍️ Automated-Essay-Grader - Corretor de Redações com IA
 
 Bem-vindo ao **Projeto Mãe Redação**, uma solução inteligente para automatizar a correção de redações manuscritas. Utilizando o poder do modelo **Google Gemini 2.0 (Multimodal)**, o sistema lê imagens de textos manuscritos, realiza uma análise pedagógica completa baseada em competências e gera relatórios formatados em Word (.docx).
 
@@ -106,11 +106,8 @@ source venv/bin/activate
 # Instalar pacotes
 pip install -r requirements.txt
 ```
-<<<<<<< HEAD
 🧠 **Desafios Técnicos Superados**
 Engenharia de Prompt com JSON: Configuração do modelo para retornar estritamente um JSON válido, evitando erros de parseamento na geração do documento final.
-=======
->>>>>>> 1e9df83 (update readme)
 
 ### 3. Configuração de Credenciais
 Este projeto utiliza uma pasta `secrets/` para organizar chaves de API.
@@ -119,10 +116,8 @@ Este projeto utiliza uma pasta `secrets/` para organizar chaves de API.
 2.  Coloque o arquivo da sua Service Account do Google Cloud lá dentro (ex: `google-credentials.json`).
 3.  (Para Drive) Coloque o `credentials.json` do OAuth Client lá dentro.
 
-<<<<<<< HEAD
 📄 **Licença**
 Este projeto está sob a licença MIT - veja o arquivo LICENSE para detalhes.
-=======
 Configure o arquivo `.env`:
 ```bash
 cp .env.example .env
@@ -134,7 +129,6 @@ DRIVE_FOLDER_INPUT_ID=seu_id_da_pasta_entrada
 DRIVE_FOLDER_OUTPUT_ID=seu_id_da_pasta_saida
 GEMINI_MODEL_NAME=gemini-2.0-flash
 ```
->>>>>>> 1e9df83 (update readme)
 
 ## 💻 Como Usar
 
