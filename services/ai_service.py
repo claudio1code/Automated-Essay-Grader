@@ -1,7 +1,6 @@
 import json
 import os
-import re
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, TypedDict
 
 import google.generativeai as genai
 from PIL import Image
@@ -10,6 +9,30 @@ from config import Config
 from logger import get_logger
 
 logger = get_logger(__name__)
+
+
+# --- Definição do Schema de Resposta (Tipagem Forte) ---
+class DetalheCompetencia(TypedDict):
+    nota: int
+    analise: str
+
+
+class AnaliseCompetencias(TypedDict):
+    c1: DetalheCompetencia
+    c2: DetalheCompetencia
+    c3: DetalheCompetencia
+    c4: DetalheCompetencia
+    c5: DetalheCompetencia
+
+
+class CorrecaoRedacao(TypedDict):
+    nome_aluno: str
+    tema_redacao: str
+    data_redacao: str
+    nota_final: int
+    comentarios_gerais: str
+    alerta_originalidade: Optional[str]
+    analise_competencias: AnaliseCompetencias
 
 
 def configurar_ia() -> None:
@@ -60,6 +83,7 @@ def carregar_prompt(caminho_prompt: str = Config.PROMPT_PATH) -> str:
 def analisar_redacao(caminho_imagem: str, prompt: str) -> Optional[Dict[str, Any]]:
     """
     Envia a imagem para a IA e retorna a análise estruturada.
+    Utiliza o recurso 'response_schema' do Gemini para garantir JSON válido.
 
     Args:
         caminho_imagem (str): Caminho do arquivo da imagem da redação.
@@ -69,11 +93,17 @@ def analisar_redacao(caminho_imagem: str, prompt: str) -> Optional[Dict[str, Any
         Optional[Dict[str, Any]]: Um dicionário com os dados da correção ou None em caso de falha.
     """
     model_name = Config.MODEL_NAME
-    logger.info(f"Iniciando análise com o modelo: {model_name}")
+    logger.info(f"Iniciando análise estruturada com o modelo: {model_name}")
 
     try:
-        # Inicializa o modelo
-        model = genai.GenerativeModel(model_name)
+        # Configuração de Geração para forçar JSON seguindo o Schema
+        generation_config = genai.GenerationConfig(
+            response_mime_type="application/json", response_schema=CorrecaoRedacao
+        )
+
+        model = genai.GenerativeModel(
+            model_name=model_name, generation_config=generation_config
+        )
 
         # Carrega a imagem
         if not os.path.exists(caminho_imagem):
@@ -83,27 +113,26 @@ def analisar_redacao(caminho_imagem: str, prompt: str) -> Optional[Dict[str, Any
         img = Image.open(caminho_imagem)
 
         # Gera o conteúdo
-        response = model.generate_content([prompt, img])
+        # Prompt Adicional para reforçar a obediência ao Schema
+        prompt_reforco = (
+            f"{prompt}\n\n"
+            "IMPORTANTE: Responda APENAS com o JSON estrito seguindo a estrutura fornecida."
+        )
+
+        response = model.generate_content([prompt_reforco, img])
         resposta_texto = response.text
 
-        # Extrai o JSON da resposta
-        json_match = re.search(r"\{.*\}", resposta_texto, re.DOTALL)
+        # Parse direto do JSON (agora garantido pela API)
+        try:
+            dados_redacao = json.loads(resposta_texto)
+            logger.info("Análise concluída e JSON estruturado recebido com sucesso.")
+            return dados_redacao
 
-        if json_match:
-            json_str = json_match.group(0)
-            try:
-                dados_redacao = json.loads(json_str)
-                logger.info("Análise concluída e JSON processado com sucesso.")
-                return dados_redacao
-            except json.JSONDecodeError:
-                logger.error(
-                    f"A IA retornou um JSON inválido. Resposta recebida:\n{json_str}"
-                )
-                return None
-        else:
+        except json.JSONDecodeError as json_err:
             logger.error(
-                f"Nenhuma estrutura JSON foi encontrada na resposta da IA. Resposta recebida:\n{resposta_texto}"
+                f"Falha ao decodificar JSON (mesmo com schema forçado): {json_err}"
             )
+            logger.debug(f"Conteúdo recebido: {resposta_texto}")
             return None
 
     except Exception as e:
