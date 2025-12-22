@@ -1,16 +1,38 @@
-# Ambiente Virtual do Python
+# --- Python & Virtual Env ---
+__pycache__/
+*.py[cod]
+*$py.class
 venv/
+.venv/
+env/
 
-# Arquivos de segredos e credenciais
+# --- Environment & Secrets (NEVER COMMIT THESE) ---
 .env
+.env.*
+!.env.example
+
+# --- Google Credentials ---
+# Specific patterns to ensure secrets are ignored
+secrets/
+credentials.json
+token.json
+google-credentials.json
+client_secret_*.json
 *.json
 
-# Arquivos temporários do Python e do sistema
-__pycache__/
-*.pyc
-.DS_Store
+# --- Temporary Directories ---
+# Stores uploaded images and generated docs during runtime
+temp_uploads/
+temp_lote/
 
-# Pastas e arquivos de build (gerados por PyInstaller, etc.)
+# --- OS Generated Files ---
+.DS_Store
+Thumbs.db
+
+# --- Build & Distribution ---
 build/
 dist/
 *.spec
+
+# --- Logs ---
+*.log
