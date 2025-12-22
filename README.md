@@ -60,7 +60,7 @@ Para monitorar e corrigir arquivos de uma pasta do Drive automaticamente:
    ```bash
    python corrigir_em_lote.py
 ````
-📂 **Estrutura do Projeto
+📂 **Estrutura do Projeto**
 ```
 ├── app.py                 # Interface Web (Frontend Streamlit)
 ├── logica_ia.py           # Integração com Gemini e Engenharia de Prompt
@@ -70,14 +70,14 @@ Para monitorar e corrigir arquivos de uma pasta do Drive automaticamente:
 ├── template.docx          # Modelo base para o relatório final
 └── requirements.txt       # Dependências do projeto
 ```
-🧠 **Desafios Técnicos Superados
+🧠 **Desafios Técnicos Superados**
 Engenharia de Prompt com JSON: Configuração do modelo para retornar estritamente um JSON válido, evitando erros de parseamento na geração do documento final.
 
 Integração Multimodal: Envio simultâneo de imagem e texto para o modelo interpretar a caligrafia e o conteúdo semântico em uma única chamada de API.
 
 Manipulação de Arquivos: Uso de buffers de memória (io.BytesIO) para gerar e manipular arquivos Word sem necessidade de gravação excessiva em disco.
 
-📄 **Licença
+📄 **Licença**
 Este projeto está sob a licença MIT - veja o arquivo LICENSE para detalhes.
 
 Desenvolvido por Claudio Matheus
