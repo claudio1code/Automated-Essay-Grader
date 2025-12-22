@@ -1,6 +1,6 @@
 # ✍️ Automated-Essay-Grader - Corretor de Redações com IA
 
-Bem-vindo ao **Projeto Mãe Redação**, uma solução inteligente para automatizar a correção de redações manuscritas. Utilizando o poder do modelo **Google Gemini 2.0 (Multimodal)**, o sistema lê imagens de textos manuscritos, realiza uma análise pedagógica completa baseada em competências e gera relatórios formatados em Word (.docx).
+Bem-vindo ao **Automated-Essay-Grader**, uma solução inteligente para automatizar a correção de redações manuscritas. Utilizando o poder do modelo **Google Gemini 2.0 (Multimodal)**, o sistema lê imagens de textos manuscritos, realiza uma análise pedagógica completa baseada em competências e gera relatórios formatados em Word (.docx).
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)
 ![Gemini API](https://img.shields.io/badge/AI-Google%20Gemini%202.0-orange)
