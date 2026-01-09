@@ -1,4 +1,12 @@
 import os
+import sys
+
+# Adiciona o diretório 'src' ao sys.path para permitir importações relativas
+current_dir = os.path.dirname(os.path.abspath(__file__))
+src_dir = os.path.abspath(os.path.join(current_dir, ".."))
+if src_dir not in sys.path:
+    sys.path.insert(0, src_dir)
+
 import re
 import tkinter as tk
 from tkinter import filedialog
