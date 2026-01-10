@@ -33,7 +33,7 @@ class Config:
     TMP_DIR = os.path.join(BASE_DIR, os.getenv("TMP_DIR", "tmp"))
 
     # Configurações da IA
-    MODEL_NAME = os.getenv("GEMINI_MODEL_NAME", "gemini-2.0-flash")
+    MODEL_NAME = os.getenv("GEMINI_MODEL_NAME", "gemini-1.5-pro")
 
     # Configurações do Google Drive (Correção em Lote)
     DRIVE_FOLDER_INPUT_ID = os.getenv(

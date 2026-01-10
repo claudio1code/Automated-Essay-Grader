@@ -106,7 +106,7 @@ def validar_e_corrigir_dados(dados: Dict[str, Any]) -> Dict[str, Any]:
         comp.setdefault("nota", 0)
         comp.setdefault("analise", "Análise não disponível.")
 
-        total += comp.get("nota", 0)
+        total += int(comp.get("nota", 0))
 
     # Atualiza ou define nota_final
     if dados.get("nota_final", 0) == 0:
