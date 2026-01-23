@@ -93,8 +93,14 @@ python health_check.py
 
 ### 🌐 Interface Web (Correção Individual)
 Ideal para correções rápidas e visuais.
+
+Para iniciar a interface web, use o script `run.sh`:
 ```bash
-streamlit run app.py
+./run.sh
+```
+Ou, se preferir executar diretamente (após ativar o ambiente virtual):
+```bash
+streamlit run src/app/main.py
 ```
 
 ### 🤖 Automação em Lote (Google Drive)
