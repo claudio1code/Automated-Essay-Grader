@@ -9,7 +9,7 @@ from googleapiclient.discovery import Resource, build
 from googleapiclient.http import MediaIoBaseUpload
 
 from app.core.logger import get_logger
-from config import Config
+from config.settings import settings
 
 logger = get_logger(__name__)
 
@@ -30,8 +30,8 @@ class GoogleDriveService:
         Realiza a autenticação OAuth2 e retorna o cliente do Drive.
         """
         creds = None
-        token_path = Config.DRIVE_TOKEN_PATH
-        credentials_path = Config.DRIVE_CREDENTIALS_PATH
+        token_path = settings.DRIVE_TOKEN_PATH
+        credentials_path = settings.DRIVE_CREDENTIALS_PATH
 
         # 1. Tenta carregar token existente
         if os.path.exists(token_path):
@@ -89,6 +89,70 @@ class GoogleDriveService:
         except Exception as e:
             logger.error(f"Erro ao listar arquivos na pasta {folder_id}: {e}")
             return []
+
+    def list_files(self, folder_id: str, image_extensions: List[str] = None) -> List[Dict[str, str]]:
+        """
+        Lista arquivos em uma pasta específica.
+        Pode filtrar por extensões de imagem.
+        """
+        if image_extensions is None:
+            image_extensions = ['.jpg', '.jpeg', '.png', '.bmp']
+        
+        # Constrói query para diferentes tipos de imagem
+        mime_types = []
+        for ext in image_extensions:
+            if ext.lower() in ['.jpg', '.jpeg']:
+                mime_types.append('image/jpeg')
+            elif ext.lower() == '.png':
+                mime_types.append('image/png')
+            elif ext.lower() == '.bmp':
+                mime_types.append('image/bmp')
+        
+        # Remove duplicados
+        mime_types = list(set(mime_types))
+        
+        # Constrói query
+        mime_query = ' or '.join([f"mimeType='{mt}'" for mt in mime_types])
+        query = f"'{folder_id}' in parents and ({mime_query}) and trashed=false"
+        
+        try:
+            results = (
+                self.service.files()
+                .list(q=query, fields="files(id, name)")
+                .execute()
+            )
+            items = results.get("files", [])
+            logger.info(f"Encontrados {len(items)} arquivos na pasta {folder_id}")
+            return items
+        except Exception as e:
+            logger.error(f"Erro ao listar arquivos na pasta {folder_id}: {e}")
+            return []
+
+    def upload_file(self, folder_id: str, file_name: str, file_content: bytes, mime_type: str) -> Optional[str]:
+        """
+        Faz upload de um arquivo para uma pasta no Drive.
+        Retorna o ID do novo arquivo.
+        """
+        try:
+            file_metadata = {"name": file_name, "parents": [folder_id]}
+            
+            media = MediaIoBaseUpload(
+                io.BytesIO(file_content),
+                mimetype=mime_type,
+            )
+            
+            file = (
+                self.service.files()
+                .create(body=file_metadata, media_body=media, fields="id")
+                .execute()
+            )
+            
+            logger.info(f"Upload concluído: {file_name} (ID: {file.get('id')})")
+            return file.get("id")
+            
+        except Exception as e:
+            logger.error(f"Erro ao fazer upload do arquivo {file_name}: {e}")
+            return None
 
     def download_file(self, file_id: str) -> Optional[bytes]:
         """

@@ -1,9 +1,21 @@
-streamlit
-google-generativeai
-python-dotenv
-Pillow
-python-docx
-google-api-python-client
-google-auth-oauthlib
-google-auth-httplib2
-google-auth
+# Core dependencies - versões específicas e otimizadas
+streamlit==1.29.0
+google-generativeai==0.8.3
+python-dotenv==1.0.1
+Pillow==10.4.0
+python-docx==1.1.2
+
+# Google APIs - versões compatíveis e otimizadas
+google-api-python-client==2.154.0
+google-auth-oauthlib==1.2.1
+google-auth-httplib2==0.2.0
+google-auth==2.29.0
+
+# Vector database e RAG - versões estáveis
+chromadb==0.5.23
+langchain-community==0.3.17
+langchain-google-genai==2.0.6
+
+# Document processing - mantido por compatibilidade
+docx2txt==0.8
+pypdf==5.1.0

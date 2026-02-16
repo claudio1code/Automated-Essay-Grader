@@ -7,7 +7,7 @@ from docx.table import Table, _Cell
 from docx.text.paragraph import Paragraph
 
 from app.core.logger import get_logger
-from config import Config
+from config.settings import settings
 
 logger = get_logger(__name__)
 
@@ -122,7 +122,7 @@ def processar_xpath_fallback(document: Document, substituicoes: Dict[str, str]) 
 
 
 def preencher_e_gerar_docx(
-    dados: Dict[str, Any], caminho_template: str = Config.TEMPLATE_DOCX_PATH
+    dados: Dict[str, Any], caminho_template: str = settings.TEMPLATE_DOCX_PATH
 ) -> Optional[BytesIO]:
     """
     Preenche o template .docx com os dados da correção.
